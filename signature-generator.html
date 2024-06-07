@@ -1,0 +1,239 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Signature Template</title>
+    <style>
+        tr,
+        td {
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 400px;
+        }
+
+        label {
+            margin-top: 10px;
+        }
+
+        .container {
+            width: 560px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        #signature-preview {
+            display: none;
+        }
+
+        .name {
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            color: #fffff6;
+            word-wrap: unset;
+        }
+
+        .contacts-container {
+            min-width: none;
+            line-height: 18px;
+            padding-top: 10px;
+            vertical-align: middle;
+        }
+
+        .contacts {
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            text-wrap: nowrap;
+        }
+
+        .form-button-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        /* .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 20px 0px;
+            transition-duration: 0.3s;
+            cursor: pointer;
+            background-color: white;
+            color: black;
+            border: 2px solid #008CBA;
+        }
+
+        .button:hover {
+            background-color: #008CBA;
+            color: white;
+        } */
+    </style>
+</head>
+
+<body>
+    <h1>Outlook Handtekening Generator</h1>
+    <form id="signature-form">
+        <label for="name">Naam:</label>
+        <input type="text" id="name" required>
+        <label for="title">Functie:</label>
+        <input type="text" id="title" required>
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" required>
+        <label for="phone">Telefoonnummer:</label>
+        <input type="text" id="phone" required>
+        <div class="form-button-container">
+            <button class="pagebuilder-button-primary" type="button" onclick="generateSignature()">Genereer Handtekening</button>
+            <button class="pagebuilder-button-primary" type="reset" value="Reset" onclick="clear">Wis</button>
+        </div>
+    </form>
+    <div id="signature-preview">
+        <div>
+            <h4>Handtekening Preview:</h4>
+            <div id="generated-signature"></div>
+        </div>
+        <div>
+            <!-- The button used to copy the content of the table element -->
+            <button id="copyBtn" class="pagebuilder-button-primary" onclick="copyToClipboard()">Copy</button>
+        </div>
+    </div>
+</body>
+<script>
+    /**
+        see https://stackoverflow.com/questions/2044616/select-a-complete-table-with-javascript-to-be-copied-to-clipboard
+    **/
+
+    function generateSignature() {
+
+        const name = document.getElementById('name').value;
+        const title = document.getElementById('title').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+
+        const signatureHTML = `
+     
+        <table id="signature" role="presentation">
+        <tbody>
+            <tr>
+                <td>
+                    <table border="0" cellspacing="0" cellpadding="0" role="presentation">
+                        <tbody>
+                            <tr>
+                                <td style="padding:20px 0">
+                                    <p>
+                                        <span style="font-size:16px; font-family:'Calibri',sans-serif; color:#000000">Met vriendelijke groet,<br>${name}</span>
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table height="140" class="container" border="0" cellpadding="0" cellspacing="0" style="border:none;border-collapse: collapse;color:#ffffff;padding:0;" role="presentation">
+                        <tbody>
+                            <tr>
+                                <td width="150" style="background-color:#9797E8;padding:0 5px 0 0;margin:0;border:none;height:140px;" border="0">
+                                    <img width="150" height="auto" src="https://www.amac.nl/media/email/logo/default/image001.png" alt="Amac" style="padding:0;margin:0;border:none;">
+                                </td>
+                                <!-- put your contact information here-->
+                                <td valign="middle" style="vertical-align:middle;background-color:#9797E8;padding: 0 20px;">
+                                    <table cellpadding="0" cellspacing="0" border="0" align="left" style="border-collapse: collapse; margin:0; padding:20px;" role="presentation">
+                                        <tbody style="vertical-align: middle;">
+                                            <tr style="vertical-align: inherit;">
+                                                <td class="contacts-container" valign="top" style="vertical-align: top;">
+                                                    <strong>
+                                                        <span class="name" style="font-size:18px; font-family:'Arial',sans-serif; color:#FFFFF6; white-space: nowrap;">${name}</span>
+                                                    </strong>
+                                                    <br>
+                                                    <span class="contacts">${title}</span><br>
+                                                    <span class="contacts">${email}</span><br>
+                                                    <span class="contacts">${phone}<br></span>
+                                                </td>
+                                                <td style="padding:0 20px;">
+                                                    <div width="20px"></div>
+                                                </td>
+                                                <td class="contacts-container" valign="top" style="vertical-align:top;">
+                                                    <strong>
+                                                        <span class="name" style="font-size:18px; font-family:'Arial',sans-serif; color:#FFFFF6; white-space: nowrap;">Amac The Wall</span>
+                                                    </strong>
+                                                    <br>
+                                                    <span class="contacts">Proostwetering</span><br>
+                                                    <span class="contacts">3543 AB Utrecht</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table width="600" style="width:600px;" role="presentation">
+                        <tbody>
+                            <tr>
+                                <td width="600" valign="top" style="width:600px;margin:0;padding:20px 0;">
+                                    <span style="font-size:10px; font-family: 'Arial', sans-serif; color:#AAAAAA;"> De inhoud van dit bericht is alleen bestemd voor de geadresseerde en kan vertrouwelijke of persoonlijke informatie bevatten. Als u dit bericht onbedoeld heeft ontvangen, verzoeken wij u het te vernietigen en de afzender te informeren. Het is niet toegestaan om een bericht dat niet voor u bestemd is te vermenigvuldigen, dan wel te verspreiden. De genoemde prijzen zijn onder voorbehoud van tussentijdse wijzigingen. Aan dit bericht inclusief eventuele bijlagen kunnen geen rechten ontleend worden. Amac aanvaardt geen enkele aansprakelijkheid voor schade en/of kosten die voortvloeien uit onvolledige en/of foutieve informatie in e-mailberichten. Bekijk de algemene voorwaarden van Amac op www.amac.nl. </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+              
+            `;
+
+        document.getElementById('signature-preview').style.display = "block";
+        document.getElementById('generated-signature').innerHTML = signatureHTML;
+        document.getElementById('signature-html').value = signatureHTML;
+    }
+
+    function copyToClipboard() {
+
+        var el = document.getElementById('signature');
+        var body = document.body, range, sel;
+        if (document.createRange && window.getSelection) {
+            range = document.createRange();
+            sel = window.getSelection();
+            sel.removeAllRanges();
+            try {
+                range.selectNodeContents(el);
+                sel.addRange(range);
+            } catch (e) {
+                range.selectNode(el);
+                sel.addRange(range);
+            }
+            document.execCommand("copy");
+            document.getElementById("copyBtn").textContent = "GEKOPIEERD";
+            // clear selection
+            if (sel) {
+                if (sel.removeAllRanges) {
+                    sel.removeAllRanges();
+                } else if (sel.empty) {
+                    sel.empty();
+                }
+            }
+        } else if (body.createTextRange) {
+            range = body.createTextRange();
+            range.moveToElementText(el);
+            range.select();
+            range.execCommand("Copy");
+
+        }
+    }
+
+</script>
+
+</html>
